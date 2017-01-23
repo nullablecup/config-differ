@@ -1,0 +1,37 @@
+{
+  "name": "project-lvl2-s13",
+  "version": "0.0.0",
+  "description": "gendiff",
+  "main": "index.js",
+  "scripts": {
+    "babel-node": "babel-node",
+    "eslint": "eslint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonazgarovich/project-lvl2-s13.git"
+  },
+  "author": "Anton Masallimov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonazgarovich/project-lvl2-s13/issues"
+  },
+  "homepage": "https://github.com/antonazgarovich/project-lvl2-s13#readme",
+  "dependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-stage-0": "^6.22.0",
+    "commander": "^2.9.0",
+    "eslint": "^3.14.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-flowtype": "^2.30.0",
+    "eslint-plugin-import": "^2.2.0",
+    "flow-bin": "^0.38.0",
+    "flow-typed": "^2.0.0"
+  }
+}
