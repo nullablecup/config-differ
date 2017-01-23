@@ -1,8 +1,10 @@
 {
   "name": "project-lvl2-s13",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "gendiff",
-  "main": "index.js",
+  "bin": {
+    "gendiff": "./bin/gendiff.js"
+  },
   "scripts": {
     "babel-node": "babel-node",
     "eslint": "eslint",
