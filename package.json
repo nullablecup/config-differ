@@ -1,7 +1,7 @@
 {
   "name": "project-lvl2-s13",
-  "version": "0.0.6",
-  "description": "gendiff",
+  "version": "0.0.13",
+  "description": "Compares two configuration files and shows a difference.",
   "bin": {
     "gendiff": "./dist/bin/gendiff.js"
   },
@@ -31,11 +31,13 @@
     "babel-preset-env": "^1.1.8",
     "babel-preset-stage-0": "^6.22.0",
     "commander": "^2.9.0",
+    "flow-bin": "^0.38.0",
+    "flow-typed": "^2.0.0"
+  },
+  "devDependencies": {
     "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-flowtype": "^2.30.0",
-    "eslint-plugin-import": "^2.2.0",
-    "flow-bin": "^0.38.0",
-    "flow-typed": "^2.0.0"
+    "eslint-plugin-import": "^2.2.0"
   }
 }
