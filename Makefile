@@ -9,3 +9,9 @@ publish:
 
 lint:
 		npm run eslint .
+
+test:
+		npm test
+
+test-watch:
+		npm run test-watch
