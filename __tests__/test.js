@@ -1,7 +1,46 @@
-import diff from '../src';
+import compare from '../src';
+import { DiffState } from '../src'
 
-describe.only('test difference', () => {
-  test('test diff', () => {
+describe.only('test object Difference', () => {
+  test('Difference state notChanged', () => {
+    const notChangedDiff = new DiffState('notChanged', 'timeout', 20);
+
+    expect(notChangedDiff.getState()).toBe('notChanged');
+    expect(notChangedDiff.getKey()).toBe('timeout');
+    expect(notChangedDiff.getValue()).toBe(20);
+    expect(notChangedDiff.getOldValue()).toBe(undefined);
+  });
+
+  test('Difference state changed', () => {
+    const changedDiff = new DiffState('changed', 'timeout', 50, 20);
+
+    expect(changedDiff.getState()).toBe('changed');
+    expect(changedDiff.getKey()).toBe('timeout');
+    expect(changedDiff.getValue()).toBe(50);
+    expect(changedDiff.getOldValue()).toBe(20);
+  });
+
+  test('Difference state added', () => {
+    const addedState = new DiffState('added', 'timeout', 50);
+
+    expect(addedState.getState()).toBe('added');
+    expect(addedState.getKey()).toBe('timeout');
+    expect(addedState.getValue()).toBe(50);
+    expect(addedState.getOldValue()).toBe(undefined);
+  });
+
+  test('Difference state deleted', () => {
+    const deletedState = new DiffState('deleted', 'timeout', 50);
+
+    expect(deletedState.getState()).toBe('deleted');
+    expect(deletedState.getKey()).toBe('timeout');
+    expect(deletedState.getValue()).toBe(50);
+    expect(deletedState.getOldValue()).toBe(undefined);
+  });
+});
+
+describe('test compare', () => {
+  test('test compare', () => {
     const before = {
       host: 'hexlet.io',
       timeout: 50,
@@ -41,7 +80,7 @@ describe.only('test difference', () => {
       }
     ];
 
-    expect(diff(before, after)).toEqual(result);
+    expect(compare(before, after)).toEqual(result);
   });
 });
 
@@ -67,5 +106,5 @@ test('test function diff', () => {
     '  + verbose: true\n' +
     '}'
   );
-  expect(diff(before, after)).toBe(result);
+  expect(compare(before, after)).toBe(result);
 });
