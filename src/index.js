@@ -47,7 +47,7 @@ const isAdded = (before, afterKey) =>
 const isDeleted = (after, beforeKey) =>
   !(beforeKey in after);
 
-const getAstDiff = (before: Object, after: Object): Object => {
+export const getAstDiff = (before: Object, after: Object): Object => {
   const afterKeys = Object.keys(after);
   const beforeKeys = Object.keys(before);
 
@@ -66,5 +66,30 @@ const getAstDiff = (before: Object, after: Object): Object => {
   );
 };
 
-export default getAstDiff;
+export const astToPlainText = (astDiff) => {
+  const mask = {
+    notChanged: (key, value) => `    ${key}: ${value}\n`,
+    changed: (key, value, oldValue) => `  + ${key}: ${value}\n  - ${key}: ${oldValue}\n`,
+    deleted: (key, value) => `  - ${key}: ${value}\n`,
+    added: (key, value) => `  + ${key}: ${value}\n`,
+  };
+
+  const plainTextMiddle = astDiff.reduce((acc, diffState) => {
+    const state = diffState.getState();
+    const key = diffState.getKey();
+    const value = diffState.getValue();
+    const oldValue = diffState.getOldValue();
+
+    return acc + mask[state](key, value, oldValue);
+  }, '');
+
+  return `{\n${plainTextMiddle}}`;
+};
+
+const compare = (before, after) => {
+  const astDiff = getAstDiff(before, after);
+  return astToPlainText(astDiff);
+};
+
+export default compare;
 

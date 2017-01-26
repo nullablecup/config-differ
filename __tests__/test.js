@@ -1,4 +1,4 @@
-import compare, { DiffState } from '../src';
+import compare, { DiffState, getAstDiff, astToPlainText } from '../src';
 
 describe('test object Difference', () => {
   test('Difference state notChanged', () => {
@@ -38,32 +38,51 @@ describe('test object Difference', () => {
   });
 });
 
-describe('test compare', () => {
-  test('test compare', () => {
-    const before = {
-      host: 'hexlet.io',
-      timeout: 50,
-      proxy: '123.234.53.22',
-    };
+test('test getAstDiff', () => {
+  const before = {
+    host: 'hexlet.io',
+    timeout: 50,
+    proxy: '123.234.53.22',
+  };
 
-    const after = {
-      host: 'hexlet.io',
-      timeout: 20,
-      verbose: true,
-    };
+  const after = {
+    host: 'hexlet.io',
+    timeout: 20,
+    verbose: true,
+  };
 
-    const result = [
-      new DiffState('notChanged', 'host', 'hexlet.io'),
-      new DiffState('changed', 'timeout', 20, 50),
-      new DiffState('deleted', 'proxy', '123.234.53.22'),
-      new DiffState('added', 'verbose', true),
-    ];
+  const result = [
+    new DiffState('notChanged', 'host', 'hexlet.io'),
+    new DiffState('changed', 'timeout', 20, 50),
+    new DiffState('deleted', 'proxy', '123.234.53.22'),
+    new DiffState('added', 'verbose', true),
+  ];
 
-    expect(compare(before, after)).toEqual(result);
-  });
+  expect(getAstDiff(before, after)).toEqual(result);
 });
 
-xtest('test display plain text', () => {
+test('test astToPlainText', () => {
+  const astDiff = [
+    new DiffState('notChanged', 'host', 'hexlet.io'),
+    new DiffState('changed', 'timeout', 20, 50),
+    new DiffState('deleted', 'proxy', '123.234.53.22'),
+    new DiffState('added', 'verbose', true),
+  ];
+
+  const result = (
+    '{\n' +
+    '    host: hexlet.io\n' +
+    '  + timeout: 20\n' +
+    '  - timeout: 50\n' +
+    '  - proxy: 123.234.53.22\n' +
+    '  + verbose: true\n' +
+    '}'
+  );
+
+  expect(astToPlainText(astDiff)).toBe(result);
+});
+
+test('test display plain text', () => {
   const before = {
     host: 'hexlet.io',
     timeout: 50,
