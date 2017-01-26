@@ -5,6 +5,7 @@
   "bin": {
     "gendiff": "./dist/bin/gendiff.js"
   },
+  "main": "index.js",
   "scripts": {
     "babel-node": "babel-node",
     "eslint": "eslint",
