@@ -93,6 +93,17 @@ test('test get content from json', () => {
   expect(content).toEqual(result);
 });
 
+test('test get content from yml', () => {
+  const content = getContent('__tests__/__fixtures__/before.yml');
+  const result = {
+    host: 'hexlet.io',
+    proxy: '123.234.53.22',
+    timeout: 50,
+  };
+
+  expect(content).toEqual(result);
+});
+
 test('test display plain text', () => {
   const pathToBeforeJson = '__tests__/__fixtures__/before.json';
   const pathToAfterJson = '__tests__/__fixtures__/after.json';
