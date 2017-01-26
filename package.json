@@ -1,16 +1,18 @@
 {
   "name": "project-lvl2-s13",
-  "version": "0.0.13",
+  "version": "0.1.2",
   "description": "Compares two configuration files and shows a difference.",
   "bin": {
     "gendiff": "./dist/bin/gendiff.js"
   },
+  "main": "index.js",
   "scripts": {
     "babel-node": "babel-node",
     "eslint": "eslint",
+    "test": "jest",
+    "test-watch": "jest --watch",
     "build": "babel src --out-dir dist",
-    "prepublish": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,7 @@
     "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-flowtype": "^2.30.0",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint-plugin-import": "^2.2.0",
+    "jest": "^18.1.0"
   }
 }
