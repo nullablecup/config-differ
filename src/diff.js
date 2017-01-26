@@ -53,10 +53,10 @@ export const getAstDiff = (before: Object, after: Object): Object => {
   const deletedDiffList = beforeKeys.filter(beforeKey => isDeleted(after, beforeKey));
 
   return [].concat(
-    notChangedDiffList.map(key => new DiffState('notChanged', key, after[key])),
-    changedDiffList.map(key => new DiffState('changed', key, after[key], before[key])),
-    deletedDiffList.map(key => new DiffState('deleted', key, before[key])),
-    addedDiffList.map(key => new DiffState('added', key, after[key])),
+    notChangedDiffList.map(key => ({ state: 'notChanged', key, value: after[key] })),
+    changedDiffList.map(key => ({ state: 'changed', key, value: after[key], oldValue: before[key] })),
+    deletedDiffList.map(key => ({ state: 'deleted', key, value: before[key] })),
+    addedDiffList.map(key => ({ state: 'added', key, value: after[key] })),
   );
 };
 
