@@ -1,11 +1,17 @@
 // @flow
+import fs from 'fs';
 
 // input json, yaml, ini
 // transform to object
 // difference return ast
 // output in the desired format plain text, pretty, json
 
-// Формат для объектов Difference
+export const getContent = (path) => {
+  const content = fs.readFileSync(path, 'utf-8');
+  return JSON.parse(content);
+};
+
+// Формат для объектов DiffState
 // 1. notChanged
 // 2. changed
 // 3. added
@@ -86,10 +92,11 @@ export const astToPlainText = (astDiff) => {
   return `{\n${plainTextMiddle}}`;
 };
 
-const compare = (before, after) => {
+const compare = (pathToFileBefore, pathToFileAfter) => {
+  const before = getContent(pathToFileBefore);
+  const after = getContent(pathToFileAfter);
   const astDiff = getAstDiff(before, after);
   return astToPlainText(astDiff);
 };
 
 export default compare;
-

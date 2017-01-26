@@ -1,4 +1,4 @@
-import compare, { DiffState, getAstDiff, astToPlainText } from '../src';
+import compare, { DiffState, getAstDiff, astToPlainText, getContent } from '../src';
 
 describe('test object Difference', () => {
   test('Difference state notChanged', () => {
@@ -82,19 +82,20 @@ test('test astToPlainText', () => {
   expect(astToPlainText(astDiff)).toBe(result);
 });
 
-test('test display plain text', () => {
-  const before = {
+test('test get content from json', () => {
+  const content = getContent('__tests__/__fixtures__/before.json');
+  const result = {
     host: 'hexlet.io',
-    timeout: 50,
     proxy: '123.234.53.22',
+    timeout: 50,
   };
 
-  const after = {
-    host: 'hexlet.io',
-    timeout: 20,
-    verbose: true,
-  };
+  expect(content).toEqual(result);
+});
 
+test('test display plain text', () => {
+  const pathToBeforeJson = '__tests__/__fixtures__/before.json';
+  const pathToAfterJson = '__tests__/__fixtures__/after.json';
   const result = (
     '{\n' +
     '    host: hexlet.io\n' +
@@ -104,5 +105,5 @@ test('test display plain text', () => {
     '  + verbose: true\n' +
     '}'
   );
-  expect(compare(before, after)).toBe(result);
+  expect(compare(pathToBeforeJson, pathToAfterJson)).toBe(result);
 });
