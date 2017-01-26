@@ -1,20 +1,12 @@
 // @flow
 import fs from 'fs';
 import path from 'path';
-import YAML from 'js-yaml';
+import parse from './parse';
 
 // input json, yaml, ini
 // transform to object
 // difference return ast
 // output in the desired format plain text, pretty, json
-
-const parse = (type, content) => {
-  const parserList = {
-    json: JSON.parse,
-    yml: YAML.safeLoad,
-  };
-  return parserList[type](content);
-};
 
 export const getContent = (filePath) => {
   const type = path.extname(filePath).replace(/\./g, '');
@@ -111,21 +103,13 @@ const display = (astDiff, format) => {
   }
 };
 
-const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText', showInConsole = false) => {
+const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText') => { // eslint-disable-line
   try {
     const before = getContent(pathToFileBefore);
     const after = getContent(pathToFileAfter);
 
     const astDiff = getAstDiff(before, after);
-    const formatDiff = display(astDiff, formatDisplay);
-
-
-    if (showInConsole) {
-      console.log(formatDiff);
-      return;
-    }
-
-    return formatDiff; // eslint-disable-line
+    return display(astDiff, formatDisplay);
   } catch (e) {
     console.error(`\nError\n${e.message}\n`);
   }
