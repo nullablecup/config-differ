@@ -12,45 +12,59 @@
 // 4. deleted
 export class DiffState {
   constructor(status, key, value, oldValue) {
-    this._status = status;
-    this._key = key;
-    this._value = value;
-    this._oldValue = oldValue;
+    this.status = status;
+    this.key = key;
+    this.value = value;
+    this.oldValue = oldValue;
   }
 
   getState() {
-    return this._status;
+    return this.status;
   }
 
   getKey() {
-    return this._key;
+    return this.key;
   }
 
   getValue() {
-    return this._value;
+    return this.value;
   }
 
   getOldValue() {
-    return this._oldValue;
+    return this.oldValue;
   }
 }
 
-const getAstDiff = (before: object, after: object): object => {
-  // return AST
-  // Как сравнить 2 объекта
-  // 1. Взять первый ключ из after и посмотреть есть ли он в before
-  // 2. Если есть проверить значение
-  //    - если одинакого кладем в дерево как не изменивщийся
-  //    - если разное кладем как изменивщийся
-  // 3. Если нет вставляем как добавленный
-  // 4. Оставщийся в before кладем как удаленные
-  const beforeKeys = Object.keys(before);
+const isNotChanged = (before, after, afterKey) =>
+  before[afterKey] === after[afterKey];
+
+const isChanged = (before, after, afterKey) =>
+  before[afterKey] !== after[afterKey];
+
+const isAdded = (before, afterKey) =>
+  !(afterKey in before);
+
+const isDeleted = (after, beforeKey) =>
+  !(beforeKey in after);
+
+const getAstDiff = (before: Object, after: Object): Object => {
   const afterKeys = Object.keys(after);
-  const astDiff = afterKeys.reduce((acc, key) => {
-  }, []);
-  // console.log(beforeKeys, afterKeys);
-  return afterKeys;
-}
+  const beforeKeys = Object.keys(before);
+
+  const intersecting = afterKeys.filter(afterKey => afterKey in before);
+
+  const notChangedDiffList = intersecting.filter(afterKey => isNotChanged(before, after, afterKey));
+  const changedDiffList = intersecting.filter(afterKey => isChanged(before, after, afterKey));
+  const addedDiffList = afterKeys.filter(afterKey => isAdded(before, afterKey));
+  const deletedDiffList = beforeKeys.filter(beforeKey => isDeleted(after, beforeKey));
+
+  return [].concat(
+    notChangedDiffList.map(key => new DiffState('notChanged', key, after[key])),
+    changedDiffList.map(key => new DiffState('changed', key, after[key], before[key])),
+    deletedDiffList.map(key => new DiffState('deleted', key, before[key])),
+    addedDiffList.map(key => new DiffState('added', key, after[key])),
+  );
+};
 
 export default getAstDiff;
 

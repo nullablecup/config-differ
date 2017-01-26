@@ -1,7 +1,6 @@
-import compare from '../src';
-import { DiffState } from '../src'
+import compare, { DiffState } from '../src';
 
-describe.only('test object Difference', () => {
+describe('test object Difference', () => {
   test('Difference state notChanged', () => {
     const notChangedDiff = new DiffState('notChanged', 'timeout', 20);
 
@@ -44,57 +43,37 @@ describe('test compare', () => {
     const before = {
       host: 'hexlet.io',
       timeout: 50,
-      proxy: '123.234.53.22'
+      proxy: '123.234.53.22',
     };
 
     const after = {
       host: 'hexlet.io',
       timeout: 20,
-      verbose: true
+      verbose: true,
     };
 
     const result = [
-      {
-        key: 'host',
-        status: 'notChanged',
-        oldValue: 'hexlet.io',
-        newValue: 'hexlet.io'
-      },
-      {
-        key: 'timeout',
-        status: 'changed',
-        oldValue: '50',
-        newValue: '20'
-      },
-      {
-        key: 'proxy',
-        status: 'deleted',
-        oldValue: '123.234.53.22',
-        newValue: '123.234.53.22'
-      },
-      {
-        key: 'verbose',
-        status: 'added',
-        oldValue: 'true',
-        newValue: 'true'
-      }
+      new DiffState('notChanged', 'host', 'hexlet.io'),
+      new DiffState('changed', 'timeout', 20, 50),
+      new DiffState('deleted', 'proxy', '123.234.53.22'),
+      new DiffState('added', 'verbose', true),
     ];
 
     expect(compare(before, after)).toEqual(result);
   });
 });
 
-test('test function diff', () => {
+xtest('test display plain text', () => {
   const before = {
     host: 'hexlet.io',
     timeout: 50,
-    proxy: '123.234.53.22'
+    proxy: '123.234.53.22',
   };
 
   const after = {
     host: 'hexlet.io',
     timeout: 20,
-    verbose: true
+    verbose: true,
   };
 
   const result = (
