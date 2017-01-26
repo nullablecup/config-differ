@@ -92,11 +92,27 @@ export const astToPlainText = (astDiff) => {
   return `{\n${plainTextMiddle}}`;
 };
 
-const compare = (pathToFileBefore, pathToFileAfter) => {
+const display = (astDiff, format) => {
+  switch (format) {
+    case 'plainText':
+    default:
+      return astToPlainText(astDiff);
+  }
+};
+
+const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText', showInConsole = false) => {
   const before = getContent(pathToFileBefore);
   const after = getContent(pathToFileAfter);
+
   const astDiff = getAstDiff(before, after);
-  return astToPlainText(astDiff);
+  const formatDiff = display(astDiff, formatDisplay);
+
+  if (showInConsole) {
+    console.log(formatDiff);
+    return;
+  }
+
+  return formatDiff; // eslint-disable-line
 };
 
 export default compare;
