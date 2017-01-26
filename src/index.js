@@ -111,21 +111,13 @@ const display = (astDiff, format) => {
   }
 };
 
-const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText', showInConsole = false) => {
+const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText') => { // eslint-disable-line
   try {
     const before = getContent(pathToFileBefore);
     const after = getContent(pathToFileAfter);
 
     const astDiff = getAstDiff(before, after);
-    const formatDiff = display(astDiff, formatDisplay);
-
-
-    if (showInConsole) {
-      console.log(formatDiff);
-      return;
-    }
-
-    return formatDiff; // eslint-disable-line
+    return display(astDiff, formatDisplay);
   } catch (e) {
     console.error(`\nError\n${e.message}\n`);
   }
