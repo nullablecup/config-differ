@@ -1,34 +1,3 @@
-// Формат для объектов DiffState
-// 1. notChanged
-// 2. changed
-// 3. added
-// 4. deleted
-// TODO: class to object
-export class DiffState {
-  constructor(status, key, value, oldValue) {
-    this.status = status;
-    this.key = key;
-    this.value = value;
-    this.oldValue = oldValue;
-  }
-
-  getState() {
-    return this.status;
-  }
-
-  getKey() {
-    return this.key;
-  }
-
-  getValue() {
-    return this.value;
-  }
-
-  getOldValue() {
-    return this.oldValue;
-  }
-}
-
 const isNotChanged = (before, after, afterKey) =>
 before[afterKey] === after[afterKey];
 
