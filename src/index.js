@@ -13,12 +13,12 @@ import display from './display';
 
 const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText') => { // eslint-disable-line
   try {
-    const firstFileConfig = fs.readFileSync(pathToFileBefore, 'utf-8');
-    const secondFileConfig = fs.readFileSync(pathToFileAfter, 'utf-8');
+    const firstRawText = fs.readFileSync(pathToFileBefore, 'utf-8');
+    const secondRawText = fs.readFileSync(pathToFileAfter, 'utf-8');
 
     const typeFile = getFileExtname(pathToFileBefore);
 
-    const astDiff = diff(parse(typeFile, firstFileConfig), parse(typeFile, secondFileConfig));
+    const astDiff = diff(parse(typeFile, firstRawText), parse(typeFile, secondRawText));
 
     return display(astDiff, formatDisplay);
   } catch (e) {

@@ -1,63 +1,32 @@
-// Формат для объектов DiffState
-// 1. notChanged
-// 2. changed
-// 3. added
-// 4. deleted
-// TODO: class to object
-export class DiffState {
-  constructor(status, key, value, oldValue) {
-    this.status = status;
-    this.key = key;
-    this.value = value;
-    this.oldValue = oldValue;
-  }
+import { union, isObject } from 'lodash';
 
-  getState() {
-    return this.status;
-  }
+const isNotChanged = (before, after, key) => before[key] === after[key];
 
-  getKey() {
-    return this.key;
-  }
+const isChanged = (before, after, key) => before[key] !== after[key] && !isObject(after[key]);
 
-  getValue() {
-    return this.value;
-  }
+const isAdded = (before, key) => (before[key] === undefined);
 
-  getOldValue() {
-    return this.oldValue;
-  }
-}
+const isDeleted = (after, key) => (after[key] === undefined);
 
-const isNotChanged = (before, after, afterKey) =>
-before[afterKey] === after[afterKey];
-
-const isChanged = (before, after, afterKey) =>
-before[afterKey] !== after[afterKey];
-
-const isAdded = (before, afterKey) =>
-  !(afterKey in before);
-
-const isDeleted = (after, beforeKey) =>
-  !(beforeKey in after);
+const setNested = obj =>
+  Object.keys(obj).map(key =>
+    ({ state: 'notChanged', key, value: isObject(obj[key]) ? setNested(obj[key]) : obj[key] }));
 
 export const getAstDiff = (before: Object, after: Object): Object => {
-  const afterKeys = Object.keys(after);
-  const beforeKeys = Object.keys(before);
+  const unitedKeys = union(Object.keys(before), Object.keys(after));
 
-  const intersecting = afterKeys.filter(afterKey => afterKey in before);
-
-  const notChangedDiffList = intersecting.filter(afterKey => isNotChanged(before, after, afterKey));
-  const changedDiffList = intersecting.filter(afterKey => isChanged(before, after, afterKey));
-  const addedDiffList = afterKeys.filter(afterKey => isAdded(before, afterKey));
-  const deletedDiffList = beforeKeys.filter(beforeKey => isDeleted(after, beforeKey));
-
-  return [].concat(
-    notChangedDiffList.map(key => ({ state: 'notChanged', key, value: after[key] })),
-    changedDiffList.map(key => ({ state: 'changed', key, value: after[key], oldValue: before[key] })),
-    deletedDiffList.map(key => ({ state: 'deleted', key, value: before[key] })),
-    addedDiffList.map(key => ({ state: 'added', key, value: after[key] })),
-  );
+  return unitedKeys.map((key) => {
+    if (isAdded(before, key)) {
+      return { state: 'added', key, value: isObject(after[key]) ? setNested(after[key]) : after[key] };
+    } else if (isDeleted(after, key)) {
+      return { state: 'deleted', key, value: isObject(before[key]) ? setNested(before[key]) : before[key] };
+    } else if (isNotChanged(before, after, key)) {
+      return { state: 'notChanged', key, value: after[key] };
+    } else if (isChanged(before, after, key)) {
+      return { state: 'changed', key, value: after[key], oldValue: before[key] };
+    }
+    return { state: 'nested', key, value: getAstDiff(before[key], after[key]) };
+  });
 };
 
 export default getAstDiff;
