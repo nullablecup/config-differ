@@ -1,32 +1,31 @@
-const isNotChanged = (before, after, afterKey) =>
-before[afterKey] === after[afterKey];
+import { union } from 'lodash';
+import { isObject } from './utils';
 
-const isChanged = (before, after, afterKey) =>
-before[afterKey] !== after[afterKey];
+const isNotChanged = (before, after, key) =>
+  before[key] === after[key];
 
-const isAdded = (before, afterKey) =>
-  !(afterKey in before);
+const isChanged = (before, after, key) =>
+  before[key] !== after[key] && !isObject(after[key]);
 
-const isDeleted = (after, beforeKey) =>
-  !(beforeKey in after);
+const isAdded = (before, key) => (before[key] === undefined);
+
+const isDeleted = (after, key) => (after[key] === undefined);
 
 export const getAstDiff = (before: Object, after: Object): Object => {
-  const afterKeys = Object.keys(after);
-  const beforeKeys = Object.keys(before);
+  const unitedKeys = union(Object.keys(before), Object.keys(after));
 
-  const intersecting = afterKeys.filter(afterKey => afterKey in before);
-
-  const notChangedDiffList = intersecting.filter(afterKey => isNotChanged(before, after, afterKey));
-  const changedDiffList = intersecting.filter(afterKey => isChanged(before, after, afterKey));
-  const addedDiffList = afterKeys.filter(afterKey => isAdded(before, afterKey));
-  const deletedDiffList = beforeKeys.filter(beforeKey => isDeleted(after, beforeKey));
-
-  return [].concat(
-    notChangedDiffList.map(key => ({ state: 'notChanged', key, value: after[key] })),
-    changedDiffList.map(key => ({ state: 'changed', key, value: after[key], oldValue: before[key] })),
-    deletedDiffList.map(key => ({ state: 'deleted', key, value: before[key] })),
-    addedDiffList.map(key => ({ state: 'added', key, value: after[key] })),
-  );
+  return unitedKeys.map((key) => {
+    if (isAdded(before, key)) {
+      return { state: 'added', key, value: after[key] };
+    } else if (isDeleted(after, key)) {
+      return { state: 'deleted', key, value: before[key] };
+    } else if (isNotChanged(before, after, key)) {
+      return { state: 'notChanged', key, value: after[key] };
+    } else if (isChanged(before, after, key)) {
+      return { state: 'changed', key, value: after[key], oldValue: before[key] };
+    }
+    return { state: 'nested', key, value: getAstDiff(before[key], after[key]) };
+  });
 };
 
 export default getAstDiff;
