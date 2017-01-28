@@ -1,5 +1,4 @@
-import { union } from 'lodash';
-import { isObject } from './utils';
+import { union, isObject } from 'lodash';
 
 const isNotChanged = (before, after, key) =>
   before[key] === after[key];
