@@ -10,22 +10,22 @@ const isDeleted = (after, key) => (after[key] === undefined);
 
 const setNested = obj =>
   Object.keys(obj).map(key =>
-    ({ state: 'notChanged', key, value: isObject(obj[key]) ? setNested(obj[key]) : obj[key] }));
+    ({ type: 'notChanged', key, value: isObject(obj[key]) ? setNested(obj[key]) : obj[key] }));
 
 export const getAstDiff = (before: Object, after: Object): Object => {
   const unitedKeys = union(Object.keys(before), Object.keys(after));
 
   return unitedKeys.map((key) => {
     if (isAdded(before, key)) {
-      return { state: 'added', key, value: isObject(after[key]) ? setNested(after[key]) : after[key] };
+      return { type: 'added', key, value: isObject(after[key]) ? setNested(after[key]) : after[key] };
     } else if (isDeleted(after, key)) {
-      return { state: 'deleted', key, value: isObject(before[key]) ? setNested(before[key]) : before[key] };
+      return { type: 'deleted', key, value: isObject(before[key]) ? setNested(before[key]) : before[key] };
     } else if (isNotChanged(before, after, key)) {
-      return { state: 'notChanged', key, value: after[key] };
+      return { type: 'notChanged', key, value: after[key] };
     } else if (isChanged(before, after, key)) {
-      return { state: 'changed', key, value: after[key], oldValue: before[key] };
+      return { type: 'changed', key, value: after[key], oldValue: before[key] };
     }
-    return { state: 'nested', key, value: getAstDiff(before[key], after[key]) };
+    return { type: 'nested', key, value: getAstDiff(before[key], after[key]) };
   });
 };
 

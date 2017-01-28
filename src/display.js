@@ -10,15 +10,15 @@ const astToPlainText = (astDiff, space = '') => {
   };
 
   const plainTextMiddle = astDiff.reduce((acc, diffState) => {
-    const { state, key, value, oldValue } = diffState;
+    const { type, key, value, oldValue } = diffState;
 
-    if (state === 'nested') {
-      return acc + mask[state](key, astToPlainText(value, `${space}    `), oldValue);
-    } else if ((state === 'added' || state === 'deleted') && isObject(value)) {
-      return acc + mask[state](key, astToPlainText(value, `${space}    `), oldValue);
+    if (type === 'nested') {
+      return acc + mask[type](key, astToPlainText(value, `${space}    `), oldValue);
+    } else if ((type === 'added' || type === 'deleted') && isObject(value)) {
+      return acc + mask[type](key, astToPlainText(value, `${space}    `), oldValue);
     }
 
-    return acc + mask[state](key, value, oldValue);
+    return acc + mask[type](key, value, oldValue);
   }, '');
 
   return `{\n${plainTextMiddle}${space}}`;
