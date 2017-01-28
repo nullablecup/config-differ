@@ -1,12 +1,16 @@
 import YAML from 'js-yaml';
 import ini from 'ini';
 
-export default (type, content) => {
-  const parserList = {
-    json: JSON.parse,
-    yml: YAML.safeLoad,
-    ini: ini.parse,
-  };
+const parserList = {
+  json: JSON.parse,
+  yml: YAML.safeLoad,
+  ini: ini.parse,
+};
 
-  return parserList[type](content);
+export default (format, content) => {
+  const parser = parserList[format];
+  if (!parser) {
+    throw new Error(`Format "${format}" isn't supported.`);
+  }
+  return parser(content);
 };
