@@ -1,7 +1,8 @@
 import pretty from './pretty';
 import plain from './plain';
+import json from './json';
 
-const converters = { pretty, plain };
+const converters = { pretty, plain, json };
 
 const display = (astDiff, format) => {
   const converter = converters[format];
