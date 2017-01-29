@@ -11,14 +11,14 @@ import display from './display';
 // output in the desired format plain text, pretty, json
 // парсинг аргументов, чтение файлов, парсинг файлов, нахождение различий, печать на экран
 
-const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'plainText') => { // eslint-disable-line
+const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'pretty') => { // eslint-disable-line
   try {
     const firstRawText = fs.readFileSync(pathToFileBefore, 'utf-8');
     const secondRawText = fs.readFileSync(pathToFileAfter, 'utf-8');
 
-    const typeFile = getFileExtname(pathToFileBefore);
+    const formatFile = getFileExtname(pathToFileBefore);
 
-    const astDiff = diff(parse(typeFile, firstRawText), parse(typeFile, secondRawText));
+    const astDiff = diff(parse(formatFile, firstRawText), parse(formatFile, secondRawText));
 
     return display(astDiff, formatDisplay);
   } catch (e) {
