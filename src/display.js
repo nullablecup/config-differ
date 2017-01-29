@@ -1,5 +1,6 @@
 import { isObject } from 'lodash';
 
+// FIXME: think how to simplify functions
 const astToPretty = (astDiff, space = '') => {
   const mask = {
     notChanged: (key, value) => `${space}    ${key}: ${value}\n`,
