@@ -43,17 +43,21 @@ const astToPlain = (astDiff, domen = '') => {
     }
     return acc;
   }, []);
+
   return plainText.join('\n');
 };
 
+const converters = {
+  plain: astToPlain,
+  pretty: astToPretty,
+};
+
 const display = (astDiff, format) => {
-  switch (format) {
-    case 'plain':
-      return astToPlain(astDiff);
-    case 'pretty':
-    default:
-      return astToPretty(astDiff);
+  const converter = converters[format];
+  if (!converter) {
+    throw new Error(`The display format "${format}" isn't supported.`);
   }
+  return converter(astDiff);
 };
 
 export default display;
