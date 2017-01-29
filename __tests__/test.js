@@ -48,3 +48,27 @@ test('test display plain text', () => {
   ].join('\n');
   expect(compare(pathToBeforeJson, pathToAfterJson, 'plain')).toBe(result);
 });
+
+test('test display json', () => {
+  const pathToBeforeJson = '__tests__/__fixtures__/before.json';
+  const pathToAfterJson = '__tests__/__fixtures__/after.json';
+  const result = {
+    common: {
+      setting1: 'Value 1',
+      setting3: true,
+      setting4: 'blah blah',
+      setting5: {
+        key5: 'value5',
+      },
+    },
+    group1: {
+      baz: 'bars',
+      foo: 'bar',
+    },
+    group3: {
+      fee: '100500',
+    },
+  };
+
+  expect(compare(pathToBeforeJson, pathToAfterJson, 'json')).toBe(JSON.stringify(result));
+});
