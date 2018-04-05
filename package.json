@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antonazgarovich/file-differ.git"
+    "url": "git+https://github.com/antonazgarovich/config-differ.git"
   },
   "author": "Anton Masallimov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/antonazgarovich/file-differ/issues"
+    "url": "https://github.com/antonazgarovich/config-differ/issues"
   },
-  "homepage": "https://github.com/antonazgarovich/file-differ#readme",
+  "homepage": "https://github.com/antonazgarovich/config-differ#readme",
   "dependencies": {
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
