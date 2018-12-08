@@ -12,7 +12,7 @@ const setNested = obj =>
   Object.keys(obj).map(key =>
     ({ type: 'notChanged', key, value: isObject(obj[key]) ? setNested(obj[key]) : obj[key] }));
 
-export const getAstDiff = (before: Object, after: Object): Object => {
+export const getAstDiff = (before, after) => {
   const unitedKeys = union(Object.keys(before), Object.keys(after));
 
   return unitedKeys.map((key) => {
