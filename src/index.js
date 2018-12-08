@@ -11,7 +11,7 @@ import display from './display';
 // output in the desired format plain text, pretty, json
 // парсинг аргументов, чтение файлов, парсинг файлов, нахождение различий, печать на экран
 
-const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'pretty') => { // eslint-disable-line
+export default (pathToFileBefore, pathToFileAfter, formatDisplay = 'pretty') => {
   try {
     const firstRawText = fs.readFileSync(pathToFileBefore, 'utf-8');
     const secondRawText = fs.readFileSync(pathToFileAfter, 'utf-8');
@@ -25,5 +25,3 @@ const compare = (pathToFileBefore, pathToFileAfter, formatDisplay = 'pretty') =>
     console.error(`\nError\n${e.message}\n`);
   }
 };
-
-export default compare;
