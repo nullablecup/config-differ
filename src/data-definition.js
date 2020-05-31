@@ -80,3 +80,7 @@ export const isNewValue = keyValueDiff => keyValueDiff.type === NEW_VALUE;
 export const isEqualValue = keyValueDiff => keyValueDiff.type === EQUAL_VALUE;
 export const isMissingValue = keyValueDiff => keyValueDiff.type === MISSING_VALUE;
 export const isDifferentValue = keyValueDiff => keyValueDiff.type === DIFFERENT_VALUE;
+export const isKeyValueDiff = (any) => {
+  if (!any.type) return false;
+  return isNewValue(any) || isEqualValue(any) || isMissingValue(any) || isDifferentValue(any);
+};
