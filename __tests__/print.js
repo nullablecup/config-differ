@@ -16,7 +16,7 @@ test('test display pretty', () => {
     makeMissingValue(['group2', 'abc'], 12345),
     makeNewValue(['group3', 'fee'], 100500),
   ];
-  const result = (
+  const expected = (
     ''
       + '{\n'
       + '    common: {\n'
@@ -44,5 +44,5 @@ test('test display pretty', () => {
       + '    }\n'
       + '}'
   );
-  expect(print('text', listOfKeyValueDiff)).toBe(result);
+  expect(print('text', listOfKeyValueDiff)).toBe(expected);
 });

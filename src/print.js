@@ -1,3 +1,4 @@
+import { assocPath } from 'ramda';
 import { isEqualValue, isNewValue, isMissingValue, isDifferentValue } from './data-definition';
 
 const INDENT = ' ';
@@ -40,9 +41,18 @@ const keyEnd = (amountIdentaty = 1) => {
   return `${identaties}${EMPTY_SPACE_FOR_STATUS}}${CARRIAGE_RETURN}`;
 };
 
+/*
+ * Creates tree by list of KeyValueDiff
+ *
+ * @param {[KeyValueDiff]}
+ * @returns {Object}
+ */
+export const createTree = list => {
+  return list.reduce((acc, keyValueDiff) => assocPath(keyValueDiff.path, keyValueDiff, acc), {});
+};
+
 export default (mode, list) => {
   if (mode === 'text') {
-    console.log('list', list);
     const str1 = BEGIN;
     const str2 = keyStart('common', EQUAL_STATUS, 1);
     const str3 = keyMiddle('setting1', 'Value 1', printStatus(list[0]), 2);
@@ -50,6 +60,7 @@ export default (mode, list) => {
     const str5 = keyMiddle('setting3', true, printStatus(list[2]), 2);
     const str6 = keyEnd(1);
     const str7 = END;
+
     return str1 + str2 + str3 + str4 + str5 + str6 + str7;
   }
   return {};
