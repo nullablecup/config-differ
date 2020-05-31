@@ -16,6 +16,7 @@
 
 
 const NEW = 'NEW';
+const makeNewValue = (path, value) => ({ type: NEW, path, value });
 /**
  * Interpretation as a new value by path
  *
@@ -24,10 +25,11 @@ const NEW = 'NEW';
  * @property {Path} path
  * @property {Value} value
  */
-const newValue = { type: NEW, path: 'nickname', value: 'octopus' };
+const newValue = makeNewValue('version', '1.2.0');
 
 
 const MISSING = 'MISSING';
+const makeMissingValue = (path, value) => ({ type: MISSING, path, value });
 /**
  * Interpretation as a missing value by path
  *
@@ -36,10 +38,11 @@ const MISSING = 'MISSING';
  * @property {Path} path
  * @property {Value} value
  */
-const missingValue = { type: MISSING, path: 'lastName', value: 'Salamander' };
+const missingValue = makeMissingValue('userData.lastName', 'Salamander');
 
 
 const EQUAL = 'EQUAL';
+const makeEqualValue = (path, value) => ({ type: EQUAL, path, value });
 /**
  * Interpretation as a equal value by path
  *
@@ -48,10 +51,11 @@ const EQUAL = 'EQUAL';
  * @property {Path} path
  * @property {Value} value
  */
-const equalValue = { type: EQUAL, path: 'middleName', value: 'Morkovich' };
+const equalValue = makeEqualValue('userData.middleName', 'Morkovich');
 
 
 const DIFFERENT = 'DIFFERENT';
+const makeDifferentValue = (path, valueA, valueB) => ({ type: DIFFERENT, path, valueA, valueB });
 /**
  * Interpretation as a different value by path
  *
@@ -61,13 +65,13 @@ const DIFFERENT = 'DIFFERENT';
  * @property {Value} valueA
  * @property {Value} valueB
  */
-const differentValue = { type: DIFFERENT, path: 'firstName', valueA: 'Mike', valueB: 'John' };
+const differentValue = makeDifferentValue('userData.firstName', 'Mike', 'John');
 
 /**
  * Interpretation as a unit of difference key value between configs
  *
- * @typedef {(New|Missing|Equal|Different)} DiffUnit
+ * @typedef {(New|Missing|Equal|Different)} KeyValueDiff
  */
 
-// [List-of DiffUnit]
+// [List-of KeyValueDiff]
 const simpleDiffConfig = [newValue, missingValue, equalValue, differentValue];
