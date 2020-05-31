@@ -45,11 +45,10 @@ const keyEnd = (amountIdentaty = 1) => {
  * Creates tree by list of KeyValueDiff
  *
  * @param {[KeyValueDiff]}
- * @returns {Object}
+ * @returns {{key:KeyValueDiff}}
  */
-export const createTree = list => {
-  return list.reduce((acc, keyValueDiff) => assocPath(keyValueDiff.path, keyValueDiff, acc), {});
-};
+export const createTree = list =>
+  list.reduce((acc, keyValueDiff) => assocPath(keyValueDiff.path, keyValueDiff, acc), {});
 
 export default (mode, list) => {
   if (mode === 'text') {
