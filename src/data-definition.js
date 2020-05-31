@@ -8,15 +8,15 @@
  * Interpretation as path of configs
  * Format depth is indicated through dots
  * Example:
- * - "common.setting.version"
- * - "name"
+ * - ["common", "setting", "version"]
+ * - ["name"]
  *
- * @typedef {String} Path
+ * @typedef {[String]} Path
  */
 
 
 const NEW = 'NEW';
-const makeNewValue = (path, value) => ({ type: NEW, path, value });
+export const makeNewValue = (path, value) => ({ type: NEW, path, value });
 /**
  * Interpretation as a new value by path
  *
@@ -25,11 +25,11 @@ const makeNewValue = (path, value) => ({ type: NEW, path, value });
  * @property {Path} path
  * @property {Value} value
  */
-const newValue = makeNewValue('version', '1.2.0');
+const newValue = makeNewValue(['version'], '1.2.0');
 
 
 const MISSING = 'MISSING';
-const makeMissingValue = (path, value) => ({ type: MISSING, path, value });
+export const makeMissingValue = (path, value) => ({ type: MISSING, path, value });
 /**
  * Interpretation as a missing value by path
  *
@@ -38,11 +38,11 @@ const makeMissingValue = (path, value) => ({ type: MISSING, path, value });
  * @property {Path} path
  * @property {Value} value
  */
-const missingValue = makeMissingValue('userData.lastName', 'Salamander');
+const missingValue = makeMissingValue(['userData', 'lastName'], 'Salamander');
 
 
 const EQUAL = 'EQUAL';
-const makeEqualValue = (path, value) => ({ type: EQUAL, path, value });
+export const makeEqualValue = (path, value) => ({ type: EQUAL, path, value });
 /**
  * Interpretation as a equal value by path
  *
@@ -51,11 +51,11 @@ const makeEqualValue = (path, value) => ({ type: EQUAL, path, value });
  * @property {Path} path
  * @property {Value} value
  */
-const equalValue = makeEqualValue('userData.middleName', 'Morkovich');
+const equalValue = makeEqualValue(['userData', 'middleName'], 'Morkovich');
 
 
 const DIFFERENT = 'DIFFERENT';
-const makeDifferentValue = (path, valueA, valueB) => ({ type: DIFFERENT, path, valueA, valueB });
+export const makeDifferentValue = (path, valueA, valueB) => ({ type: DIFFERENT, path, valueA, valueB });
 /**
  * Interpretation as a different value by path
  *
@@ -65,7 +65,7 @@ const makeDifferentValue = (path, valueA, valueB) => ({ type: DIFFERENT, path, v
  * @property {Value} valueA
  * @property {Value} valueB
  */
-const differentValue = makeDifferentValue('userData.firstName', 'Mike', 'John');
+const differentValue = makeDifferentValue(['userData', 'firstName'], 'Mike', 'John');
 
 /**
  * Interpretation as a unit of difference key value between configs
