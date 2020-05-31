@@ -1,4 +1,4 @@
-import { createTree } from '../src/print';
+import { createTree, printTree } from '../src/print';
 import {
   makeNewValue, makeMissingValue, makeEqualValue, makeDifferentValue,
 } from '../src/data-definition';
@@ -44,4 +44,18 @@ test('test createTree', () => {
   };
 
   expect(createTree(listOfKeyValueDiff)).toEqual(expected);
+});
+
+test('test printTree', () => {
+  const tree = {
+    common: {
+      setting1: makeEqualValue(['common', 'setting1'], 'Value 1'),
+      setting2: makeMissingValue(['common', 'setting2'], 200),
+      setting3: makeEqualValue(['common', 'setting3'], true),
+    },
+  };
+
+  const expected = '{ common: { setting1: Value 1 setting2: 200 setting3: true } }';
+
+  expect(printTree(tree)).toEqual(expected);
 });

@@ -1,5 +1,5 @@
 import { assocPath } from 'ramda';
-import { isEqualValue, isNewValue, isMissingValue, isDifferentValue } from './data-definition';
+import { isEqualValue, isNewValue, isMissingValue, isDifferentValue, isKeyValueDiff } from './data-definition';
 
 const INDENT = ' ';
 const CARRIAGE_RETURN = '\n';
@@ -44,11 +44,32 @@ const keyEnd = (amountIdentaty = 1) => {
 /*
  * Creates tree by list of KeyValueDiff
  *
- * @param {[KeyValueDiff]}
+ * @param {[KeyValueDiff]} list
  * @returns {{key:KeyValueDiff}}
  */
 export const createTree = list =>
   list.reduce((acc, keyValueDiff) => assocPath(keyValueDiff.path, keyValueDiff, acc), {});
+
+
+/*
+ * Creates tree by list of KeyValueDiff
+ *
+ * @param {{key:KeyValueDiff}} tree
+ * @returns {String}
+ */
+export const printTree = (tree) => {
+  const str = Object.keys(tree).reduce((acc, key) => {
+    const node = tree[key];
+
+    if (isKeyValueDiff(node)) {
+      return `${acc} ${key}: ${node.value}`;
+    }
+
+    return `${acc} ${key}: ${printTree(node)}`;
+  }, '');
+  return `{${str} }`;
+};
+
 
 export default (mode, list) => {
   if (mode === 'text') {
